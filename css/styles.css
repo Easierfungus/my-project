@@ -1,14 +1,16 @@
 /* General Styles */
 :root {
-    --primary-color: #ff6b6b;
-    --secondary-color: #546de5;
-    --dark-color: #3f3d56;
-    --light-color: #f8f9fa;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
+    --primary-color: #ff4757;
+    --secondary-color: #2ed573;
+    --dark-color: #2f3542;
+    --light-color: #f1f2f6;
+    --success-color: #7bed9f;
+    --warning-color: #eccc68;
+    --danger-color: #ff6b81;
     --max-width: 1200px;
-    --transition: all 0.3s ease;
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --gradient: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
 }
 
 * {
@@ -47,19 +49,23 @@ img {
 
 .btn {
     display: inline-block;
-    background-color: var(--primary-color);
+    background: var(--gradient);
     color: #fff;
     padding: 0.8rem 2rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 500;
     transition: var(--transition);
+    box-shadow: var(--shadow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .btn:hover {
-    background-color: #e5545e;
     transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
 }
 
 .btn-secondary {
@@ -159,14 +165,30 @@ nav ul li a:hover {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 80vh;
+    background: linear-gradient(45deg, #ff6b6b, #546de5);
+    color: white;
+    padding: 100px 0;
+}
+
+.hero-content {
     display: flex;
     align-items: center;
-    text-align: center;
-    color: #fff;
+    gap: 2rem;
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.hero-image {
+    flex: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .hero-text {
@@ -218,15 +240,34 @@ nav ul li a:hover {
 }
 
 .product-card {
-    border-radius: 10px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    box-shadow: var(--shadow);
     transition: var(--transition);
+    position: relative;
 }
 
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 0;
+}
+
+.product-card:hover::before {
+    opacity: 0.1;
 }
 
 .product-img {
@@ -248,6 +289,8 @@ nav ul li a:hover {
 
 .product-info {
     padding: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .product-title {
@@ -266,6 +309,19 @@ nav ul li a:hover {
     width: 100%;
     padding: 0.7rem;
     text-align: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-to-cart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-cart:active {
+    transform: translateY(0);
 }
 
 /* Features Section */

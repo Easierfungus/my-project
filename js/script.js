@@ -5,56 +5,56 @@ const products = [
         name: "Classic White T-Shirt",
         price: 19.99,
         category: "mens",
-        image: "images/tshirt-1.jpg"
+        image: "https://placehold.co/600x800/ff4757/fff?text=White+Tee"
     },
     {
         id: 2,
         name: "Vintage Black Tee",
         price: 24.99,
         category: "mens",
-        image: "images/tshirt-2.jpg"
+        image: "https://placehold.co/600x800/2f3542/fff?text=Black+Tee"
     },
     {
         id: 3,
         name: "Graphic Design T-Shirt",
         price: 29.99,
         category: "graphic",
-        image: "images/tshirt-3.jpg"
+        image: "https://placehold.co/600x800/ff6b81/fff?text=Graphic+Tee"
     },
     {
         id: 4,
         name: "Women's V-Neck T-Shirt",
         price: 22.99,
         category: "womens",
-        image: "images/tshirt-4.jpg"
+        image: "https://placehold.co/600x800/ff4757/fff?text=V-Neck+Tee"
     },
     {
         id: 5,
         name: "Casual Striped T-Shirt",
         price: 26.99,
         category: "mens",
-        image: "images/tshirt-5.jpg"
+        image: "https://placehold.co/600x800/2ed573/fff?text=Striped+Tee"
     },
     {
         id: 6,
         name: "Summer Floral Tee",
         price: 24.99,
         category: "womens",
-        image: "images/tshirt-6.jpg"
+        image: "https://placehold.co/600x800/ff6b81/fff?text=Floral+Tee"
     },
     {
         id: 7,
         name: "Abstract Art T-Shirt",
         price: 34.99,
         category: "graphic",
-        image: "images/tshirt-7.jpg"
+        image: "https://placehold.co/600x800/2f3542/fff?text=Art+Tee"
     },
     {
         id: 8,
         name: "Minimalist Design T-Shirt",
         price: 28.99,
         category: "graphic",
-        image: "images/tshirt-8.jpg"
+        image: "https://placehold.co/600x800/ff4757/fff?text=Minimal+Tee"
     }
 ];
 
@@ -138,42 +138,59 @@ document.addEventListener('DOMContentLoaded', function() {
             
             productGrid.appendChild(productCard);
         });
-        
+
         // Add Event Listeners to Add to Cart Buttons
         const addToCartBtns = document.querySelectorAll('.add-to-cart');
-        addToCartBtns.forEach(btn => {
+        console.log('Found add to cart buttons:', addToCartBtns.length);
+        if (addToCartBtns.length === 0) {
+            console.error('No add to cart buttons found!');
+        }
+        addToCartBtns.forEach((btn, index) => {
+            console.log(`Adding event listener to button ${index + 1}`);
             btn.addEventListener('click', addToCart);
+            btn.style.pointerEvents = 'auto'; // Ensure button is clickable
         });
     }
     
     // Add to Cart Function
     function addToCart(e) {
-        // Get product id
-        const productId = parseInt(e.target.dataset.id);
-        
-        // Find product
-        const product = products.find(p => p.id === productId);
-        
-        // Check if product is already in cart
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            // Update quantity
-            existingItem.quantity++;
-        } else {
-            // Add product to cart
-            cart.push({
-                ...product,
-                quantity: 1
-            });
+        try {
+            // Get product id
+            const productId = parseInt(e.target.dataset.id);
+            if (isNaN(productId)) {
+                throw new Error('Invalid product ID');
+            }
+            
+            // Find product
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                throw new Error('Product not found');
+            }
+            
+            // Check if product is already in cart
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                // Update quantity
+                existingItem.quantity++;
+            } else {
+                // Add product to cart
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            // Update cart UI
+            updateCart();
+            updateCartCount();
+            
+            // Show success message or animation
+            showToast('Product added to cart!');
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            showToast('Error adding product to cart. Please try again.');
         }
-        
-        // Update cart UI
-        updateCart();
-        updateCartCount();
-        
-        // Show success message or animation
-        showToast('Product added to cart!');
     }
     
     // Update Cart Function
